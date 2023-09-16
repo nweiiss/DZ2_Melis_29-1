@@ -20,13 +20,66 @@ gmailButton.onclick = () => {
 
 const childBlock = document.querySelector('.child_block');
 
-let position = 0;
+let positionX = 0;
+let positionY = 0;
 
 const move = () => {
-    if(position < 450){
-        position++;
-        childBlock.style.left = `${position}px`;
-        setTimeout(move, 10);
+    if (positionX <= 450 && positionY === 0) {
+        positionX++;
+        childBlock.style.left = `${positionX}px`;
+        setTimeout(move, 0);
+    } else if (positionY < 450 && positionX >= 450) {
+        positionY++;
+        childBlock.style.top = `${positionY}px`;
+        setTimeout(move, 0);
+    } else if (positionX > 0) {
+        positionX--;
+        childBlock.style.left = `${positionX}px`;
+        setTimeout(move, 0);
+    } else if (positionY > 0) {
+        positionY--;
+        childBlock.style.top = `${positionY}px`;
+        setTimeout(move, 0);
     }
 }
+
 move();
+
+
+// HOME WORK 2
+
+const startBtn = document.querySelector('#start');
+const stopBtn = document.querySelector('#stop');
+const resetBtn = document.querySelector('#reset');
+
+let intervalId;
+let number = 0;
+let counting = false; 
+
+startBtn.addEventListener('click', () => {
+    if (!counting) {
+        counting = true;
+        intervalId = setInterval(() => {
+            number++;
+            document.getElementById('secondsS').textContent = number;
+        }, 1000);
+    }
+})
+
+stopBtn.addEventListener('click', () => {
+    if(counting){
+        counting = false;
+        clearInterval(intervalId);
+    }
+})
+
+resetBtn.addEventListener('click', () => {
+    if(counting){
+        counting = false;
+        clearInterval(intervalId);
+    }
+    number = 0;
+    document.getElementById('secondsS').textContent = number;
+})
+
+    
