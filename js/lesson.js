@@ -20,7 +20,7 @@ phoneButton.onclick = () => {
     }
 }
 
-// TAB SLIDER
+// // TAB SLIDER
  
 
 const tabContentBlocks = document.querySelectorAll('.tab_content_block');
@@ -68,3 +68,64 @@ const autoSlider = (i = 0) => {
 }
 
 autoSlider()
+
+// CONVERTER
+
+const som = document.querySelector('#som');
+const usd = document.querySelector('#usd');
+const eur = document.querySelector('#eur');
+const kzt = document.querySelector('#kzt');
+const cny = document.querySelector('#cny');
+
+const converter = (element, target, target2, target3, target4, currency) => {
+    element.oninput = () => {
+        const request = new XMLHttpRequest();
+        request.open("GET", "../data/converter.json");
+        request.setRequestHeader("Content-type", "application/json");
+        request.send();
+        
+        request.onload = () => {
+            const response = JSON.parse(request.response);
+            if(currency === 'som'){
+                target.value = (element.value / response.usd).toFixed(2);
+                target2.value = (element.value / response.eur).toFixed(2);
+                target3.value = (element.value / response.kzt).toFixed(2);
+                target4.value = (element.value / response.cny).toFixed(2);
+            }else if(currency === 'usd'){
+                target.value = (element.value * response.usd).toFixed(2);
+                target2.value = (element.value * (response.usd / response.eur)).toFixed(2);
+                target3.value = (element.value * (response.usd / response.kzt)).toFixed(2);
+                target4.value = (element.value * (response.usd / response.cny)).toFixed(2);
+            }else if(currency == 'eur'){
+                target.value = (element.value * response.eur).toFixed(2);
+                target2.value = (element.value * (response.eur / response.usd)).toFixed(2);
+                target3.value = (element.value * (response.eur / response.kzt)).toFixed(2);
+                target4.value = (element.value * (response.eur / response.cny)).toFixed(2);
+            }else if (currency === 'kzt'){
+                target.value = (element.value * response.kzt).toFixed(2);
+                target2.value = (element.value * (response.kzt / response.usd)).toFixed(2);
+                target3.value = (element.value * (response.kzt / response.eur)).toFixed(2);
+                target4.value = (element.value * (response.kzt / response.cny)).toFixed(2);
+            }else if(currency === 'cny'){
+                target.value = (element.value * response.cny).toFixed(2);
+                target2.value = (element.value * (response.cny / response.usd)).toFixed(2);
+                target3.value = (element.value * (response.cny / response.eur)).toFixed(2);
+                target4.value = (element.value * (response.cny / response.kzt)).toFixed(2);
+            }
+
+            element.value === '' && (target.value = '');
+            element.value === '' && (target2.value = '');
+            element.value === '' && (target3.value = '');
+            element.value === '' && (target4.value = '');
+
+
+        }
+    }
+
+}
+converter(som, usd, eur, kzt, cny, 'som');
+converter(usd, som, eur, kzt, cny, 'usd');
+converter(eur, som, usd, kzt, cny, 'eur');
+converter(kzt, som, usd, eur, cny, 'kzt');
+converter(cny, som, usd, eur, kzt, 'cny');
+
